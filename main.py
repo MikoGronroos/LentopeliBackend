@@ -6,6 +6,8 @@ import Scripts.Core.account as account
 
 import os
 
+#test
+
 os.system('cls' if os.name == 'nt' else 'clear')
 
 if auth.Authenticate():
