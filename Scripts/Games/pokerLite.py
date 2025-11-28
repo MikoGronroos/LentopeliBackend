@@ -4,6 +4,7 @@ def Game(moneyToGamble):
     pList = []
     cList = []
     moneyWon = 0
+    reRollCheck = [0,0,0,0,0,0]
 
     for i in range(5):
         pList.append(random.randint(1,9))
@@ -28,14 +29,12 @@ def Game(moneyToGamble):
 
     while True:
         reRoll = int(input("What card do you want to re-roll? (select from cards 1-5 one at a time). When you're ready select 6 as input.) Re-roll: "))
-        #print("Also mind that every time you decide to re-roll your hand is one digit smaller (e.g. from 1-5 to 1-4) ")
         if reRoll == 6:
             break
-        else:
-            pList.remove(pList[reRoll-1])
+        elif reRollCheck[reRoll] == 0:
+            pList[reRoll] = random.randint(1, 9)
+            reRollCheck[reRoll] = 1
             print(pList)
-    while len(pList) < 5:
-        pList.append(random.randint(1, 9))
 
     print("")
     print(f"Your new hand is: {pList}")
