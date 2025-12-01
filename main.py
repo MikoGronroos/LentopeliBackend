@@ -4,7 +4,18 @@ import Scripts.Core.startNewGame as start
 import Scripts.Database.database as db
 import Scripts.Core.account as account
 from flask import Flask, request, jsonify
-app = Flask(__name__)
+from Scripts.Core.startNewGame import startGame
 
-if __name__ == '__main__':
+def create_app():
+    app = Flask(__name__)
+    app.register_blueprint(startGame)
+    return app
+
+app = create_app()
+
+@app.route('/', methods=['GET'])
+def works():
+    return "Hei"
+
+if __name__ == "__main__":
     app.run(use_reloader=True, host='127.0.0.1', port=3000)
