@@ -2,13 +2,19 @@ import Scripts.Database.database as db
 import Scripts.Core.account as account
 import os
 import sys
+from flask import Blueprint
+
+newAirports = Blueprint('newAirports', __name__)
+
+@newAirports.route('/getNewAirports')
+def getNewAiports():
+    airports = db.takeAllAirports(db.getPlayerContinent(account.name))
+    return airports
 
 def travel():
     while True:
         if db.HasMoney(account.name) == False:
             print("You run out of money")
-            sys.exit(0)
-        os.system('cls' if os.name == 'nt' else 'clear') 
         airports = db.takeAllAirports(db.getPlayerContinent(account.name))
         print(f"You have {db.GetPlayerMoney(account.name)} coins")
         print(f"A ticket costs 30 coins")

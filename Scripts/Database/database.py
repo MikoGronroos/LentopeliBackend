@@ -61,7 +61,7 @@ def ResetPlayer(name):
 def getPlayerContinent(name):
     sql = f'select airport.continent from airport, game where game.screen_name = \'{name}\' and airport.ident = game.location' 
     kursori.execute(sql)
-    return kursori.fetchall()[0][0]
+    return kursori.fetchall()
     
 
 def listMaker(continent):
