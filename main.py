@@ -6,6 +6,7 @@ import Scripts.Core.account as account
 from flask import Flask, request, jsonify
 from Scripts.Core.startNewGame import startGame
 from Scripts.Core.travel import newAirports
+from flask_cors import CORS
 
 def create_app():
     app = Flask(__name__)
@@ -14,6 +15,7 @@ def create_app():
     return app
 
 app = create_app()
+CORS(app)
 
 @app.route('/', methods=['GET'])
 def works():

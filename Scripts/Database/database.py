@@ -6,7 +6,7 @@ yhteys = mysql.connector.connect(
         port=3306,
         database='flight_game',
         user='root',
-        password='TiVi03DB',
+        password='123456789',
         autocommit=True
         )
 
