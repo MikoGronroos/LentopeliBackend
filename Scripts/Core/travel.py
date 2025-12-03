@@ -2,16 +2,21 @@ import Scripts.Database.database as db
 import Scripts.Core.account as account
 import os
 import sys
-from flask import Blueprint
+from flask import Blueprint, request, jsonify
 
-newAirports = Blueprint('newAirports', __name__)
+travel = Blueprint('travel', __name__)
 
-@newAirports.route('/getNewAirports')
+@travel.route('/getNewAirports')
 def getNewAiports():
     airports = db.takeAllAirports(db.getPlayerContinent(account.name))
     return airports
 
-def travel():
+@travel.route('/move', methods=['POST'])
+def move():
+    data = request.get_json()  
+    return jsonify({"status": data})
+
+def travel1():
     while True:
         if db.HasMoney(account.name) == False:
             print("You run out of money")
@@ -32,3 +37,4 @@ def travel():
                 input("Press enter to continue...")
         if selection == 6:
             return
+

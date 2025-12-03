@@ -5,13 +5,13 @@ import Scripts.Database.database as db
 import Scripts.Core.account as account
 from flask import Flask, request, jsonify
 from Scripts.Core.startNewGame import startGame
-from Scripts.Core.travel import newAirports
+from Scripts.Core.travel import travel
 from flask_cors import CORS
 
 def create_app():
     app = Flask(__name__)
     app.register_blueprint(startGame)
-    app.register_blueprint(newAirports)
+    app.register_blueprint(travel)
     return app
 
 app = create_app()

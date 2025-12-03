@@ -14,3 +14,4 @@ def startNewGame():
     account.airport = startingAirport
     db.newPlayerCreated(account.airport, account.name)
     return "Account created"
+
