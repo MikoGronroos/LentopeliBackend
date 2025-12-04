@@ -1,26 +1,30 @@
-from flask import Flask, request
+from flask import Flask, request, jsonify
 from loginhelper import tryLogin, tryRegister
+from flask_cors import CORS
 
 app = Flask(__name__)
-@app.route('/login')
+CORS(app)
+@app.route('/login', methods=['POST'])
 def login():
-    username = request.args.get('username')
-    password = request.args.get('password')
+    data = request.get_json()
+    username = data.get('username')
+    password = data.get('password')
 
     if tryLogin(username, password) == True:
-        return "Logged in successfully.."
+        return jsonify({"message": "Logged in successfully.."})
     else:
-        return "Wrong username or password.."
+        return jsonify({"message": "Wrong username or password.."})
 
-@app.route('/register')
+@app.route('/register', methods=['POST'])
 def register():
-    username = request.args.get('username')
-    password = request.args.get('password')
-
+    data = request.get_json()
+    username = data.get('username')
+    password = data.get('password')
+    print(username, password)
     if tryRegister(username, password) == True:
-        return "Registeration successful.."
+        return jsonify({"message": "Registeration successful.."})
     else:
-        return "Username already exists.."
+        return jsonify ({"message": "Username already exists.."})
 
 if __name__ == '__main__':
     app.run(debug=True)
