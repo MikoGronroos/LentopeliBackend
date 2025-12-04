@@ -135,3 +135,7 @@ def collect_postcard(player_id, postcard_id):
 def show_collected_postcards(player_id):
     kursori.execute(f"select postcards.name, postcards.continent from player_postcards, postcards where player_id =  \'{player_id}' and postcards.id = player_postcards.postcard_id")
     return kursori.fetchall()
+
+def addVoucher(player_id):
+    sql = f"UPDATE game SET vouchers = vouchers + 1 WHERE id = {player_id}"
+    kursori.execute(sql)
