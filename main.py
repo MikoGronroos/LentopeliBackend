@@ -3,13 +3,25 @@ import Scripts.Core.authentication as auth
 import Scripts.Core.startNewGame as start
 import Scripts.Database.database as db
 import Scripts.Core.account as account
+from flask import Flask, request, jsonify
+from Scripts.Core.startNewGame import startGame
+from Scripts.Core.travel import travel
+from Scripts.Core.loginflask import auth
+from flask_cors import CORS
 
-import os
+def create_app():
+    app = Flask(__name__)
+    app.register_blueprint(startGame)
+    app.register_blueprint(travel)
+    app.register_blueprint(auth)
+    return app
 
-os.system('cls' if os.name == 'nt' else 'clear')
+app = create_app()
+CORS(app)
 
-if auth.Authenticate():
-    if db.isNewPlayer(account.name):
-        start.startNewGame() 
-    while True:
-        gameLoop.GameLoop()
+@app.route('/', methods=['GET'])
+def works():
+    return "Hei"
+
+if __name__ == "__main__":
+    app.run(use_reloader=True, host='127.0.0.1', port=3000)
