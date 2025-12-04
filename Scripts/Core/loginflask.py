@@ -1,6 +1,7 @@
 from flask import Flask, request, jsonify
 from loginhelper import tryLogin, tryRegister
 from flask_cors import CORS
+import Scripts.Core.account as account
 
 app = Flask(__name__)
 CORS(app)
@@ -11,6 +12,7 @@ def login():
     password = data.get('password')
 
     if tryLogin(username, password):
+        account.name = username
         return jsonify({"success": True})
     else:
         return jsonify({"success": False, "message": "Wrong username or password."})
@@ -22,6 +24,7 @@ def register():
     password = data.get('password')
     print(username, password)
     if tryRegister(username, password):
+        account.name = username
         return jsonify({"success": True})
     else:
         return jsonify({"success": False, "message": "Username already exists."})
