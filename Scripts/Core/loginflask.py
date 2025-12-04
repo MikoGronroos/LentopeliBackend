@@ -1,11 +1,11 @@
-from flask import Flask, request, jsonify
-from loginhelper import tryLogin, tryRegister
-from flask_cors import CORS
+from flask import Flask, request, jsonify, Blueprint
+from Scripts.Core.loginhelper import tryLogin, tryRegister
 import Scripts.Core.account as account
 
-app = Flask(__name__)
-CORS(app)
-@app.route('/login', methods=['POST'])
+
+auth = Blueprint('auth', __name__)
+
+@auth.route('/login', methods=['POST'])
 def login():
     data = request.get_json()
     username = data.get('username')
@@ -17,7 +17,7 @@ def login():
     else:
         return jsonify({"success": False, "message": "Wrong username or password."})
 
-@app.route('/register', methods=['POST'])
+@auth.route('/register', methods=['POST'])
 def register():
     data = request.get_json()
     username = data.get('username')
@@ -28,7 +28,4 @@ def register():
         return jsonify({"success": True})
     else:
         return jsonify({"success": False, "message": "Username already exists."})
-
-if __name__ == '__main__':
-    app.run(debug=True)
     
