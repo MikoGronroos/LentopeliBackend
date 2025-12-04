@@ -10,10 +10,10 @@ def login():
     username = data.get('username')
     password = data.get('password')
 
-    if tryLogin(username, password) == True:
-        return jsonify({"message": "Logged in successfully.."})
+    if tryLogin(username, password):
+        return jsonify({"success": True})
     else:
-        return jsonify({"message": "Wrong username or password.."})
+        return jsonify({"success": False, "message": "Wrong username or password."})
 
 @app.route('/register', methods=['POST'])
 def register():
@@ -21,10 +21,10 @@ def register():
     username = data.get('username')
     password = data.get('password')
     print(username, password)
-    if tryRegister(username, password) == True:
-        return jsonify({"message": "Registeration successful.."})
+    if tryRegister(username, password):
+        return jsonify({"success": True})
     else:
-        return jsonify ({"message": "Username already exists.."})
+        return jsonify({"success": False, "message": "Username already exists."})
 
 if __name__ == '__main__':
     app.run(debug=True)
