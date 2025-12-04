@@ -58,6 +58,14 @@ def ResetPlayer(name):
     sql = f"UPDATE game set money = 100 where screen_name = \'{name}\'"   
     kursori.execute(sql)
 
+def DeletePossibleAirports(id):
+    sql = f"DELETE FROM possible_player_locations WHERE player_id = \'{id}\'"
+    kursori.execute(sql)
+
+def AddPossibleAirport(id, airport):
+    sql = f"INSERT INTO possible_player_locations (player_id, location) VALUES (\'{id}\', \'{airport}\')"
+    kursori.execute(sql)
+
 def getPlayerContinent(name):
     sql = f'select airport.continent from airport, game where game.screen_name = \'{name}\' and airport.ident = game.location' 
     kursori.execute(sql)
@@ -85,6 +93,7 @@ def isNewPlayer(name):
 def newPlayerCreated(location, name):
     sql = f"UPDATE game set location = \'{location}\', newPlayer = 0 where screen_name = \'{name}'"
     kursori.execute(sql)
+
 
 def airportTaker(continent):
     countryList = []
