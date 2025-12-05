@@ -1,6 +1,7 @@
 from flask import Flask, request, jsonify, Blueprint
 from Scripts.Core.loginhelper import tryLogin, tryRegister
 import Scripts.Core.account as account
+import Scripts.Core.startNewGame as start
 
 
 auth = Blueprint('auth', __name__)
@@ -25,6 +26,7 @@ def register():
     print(username, password)
     if tryRegister(username, password):
         account.name = username
+        start.startNewGame()
         return jsonify({"success": True})
     else:
         return jsonify({"success": False, "message": "Username already exists."})
