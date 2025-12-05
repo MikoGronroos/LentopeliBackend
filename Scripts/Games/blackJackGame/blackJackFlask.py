@@ -1,0 +1,134 @@
+from Scripts.Games.blackJackGame import cardDeckforBlackJack as deck
+from flask import Flask, request
+from flask_cors import CORS
+
+
+blackJack = Flask(__name__)
+CORS(blackJack, origins=["http://localhost:63342"])
+
+#Here comes the starting values like player's and dealer's cards
+@blackJack.route('/games/blackJack/setup/<moneyToGamble>')
+
+def setupGame(moneyToGamble):
+
+    moneyToGamble = int(moneyToGamble)
+    moneyWon = 1
+    cards = deck.getBlackjackCards()
+    cards = deck.Shuffle(cards)
+
+    playerCards = []
+    deck.setupCards(playerCards, cards)
+
+    dealerCards = []
+    deck.setupCards(dealerCards, cards)
+
+    state = 0
+    playerValue = deck.calculateValue(playerCards)
+    dealerValue = deck.calculateValue(dealerCards)
+
+    if playerValue == 21:
+        state = 3
+        moneyWon = moneyToGamble * 3
+
+    response = {
+
+    "playerCardsjson": playerCards,
+    "playerValuejson": playerValue,
+    "dealerCardsjson": dealerCards,
+    "dealerValuejson": dealerValue,
+    "cardsjson": cards,
+    "statejson": state,
+    "moneyToGamblejson": moneyToGamble,
+    "moneyWonjson": moneyWon
+
+    }
+
+    return response
+
+#Here it appends cards to dealer's hand according to the rules when you choose to stand
+@blackJack.route('/games/blackJack/stand', methods=['POST'])
+
+def stand():
+    data = request.get_json()
+    dealerCards = data['dealerCards']
+    playerCards = data['playerCards']
+    cards = data['cards']
+    state = data['state']
+    playerValue = data['playerValue']
+    moneyWon = data['moneyWon']
+    moneyToGamble = data['moneyToGamble']
+
+
+
+    while True:
+        dealerSum = deck.calculateValue(dealerCards)
+        if dealerSum <= 16:
+            dealerCards.append(cards.pop(0))
+        elif dealerSum >= 17 and dealerSum <= 21:
+            if deck.calculateValue(dealerCards) > deck.calculateValue(playerCards):
+                state = -1
+                moneyWon = -moneyToGamble
+            elif deck.calculateValue(dealerCards) == deck.calculateValue(playerCards):
+                state = 2
+                moneyWon = moneyToGamble
+            elif deck.calculateValue(dealerCards) < deck.calculateValue(playerCards):
+                state = 1
+                moneyWon = moneyToGamble * 3
+            break
+        elif dealerSum > 21:
+            state = 1
+            moneyWon = moneyToGamble * 3
+            break
+
+    dealerValue = deck.calculateValue(dealerCards)
+    response = {
+        "playerCardsjson": playerCards,
+        "playerValuejson": playerValue,
+        "dealerCardsjson": dealerCards,
+        "dealerValuejson": dealerValue,
+        "cardsjson": cards,
+        "statejson": state,
+        "moneyToGamblejson": moneyToGamble,
+        "moneyWonjson": moneyWon
+    }
+
+    return response
+
+#Here it appends cards to your hand when you choose to hit
+@blackJack.route('/games/blackJack/hit', methods=['POST'])
+
+def hit():
+    data = request.get_json()
+    dealerCards = data['dealerCards']
+    playerCards = data['playerCards']
+    cards = data['cards']
+    state = data['state']
+    dealerValue = data['dealerValue']
+    moneyWon = data['moneyWon']
+    moneyToGamble = data['moneyToGamble']
+
+    playerCards.append(cards.pop(0))
+    if deck.calculateValue(playerCards) > 21:
+        state = -1
+        moneyWon = -moneyToGamble
+    elif deck.calculateValue(playerCards) == 21:
+        state = 3
+        moneyWon = moneyToGamble * 3
+
+    playerValue = deck.calculateValue(playerCards)
+
+    response = {
+        "playerCardsjson": playerCards,
+        "playerValuejson": playerValue,
+        "dealerCardsjson": dealerCards,
+        "dealerValuejson": dealerValue,
+        "cardsjson": cards,
+        "statejson": state,
+        "moneyToGamblejson": moneyToGamble,
+        "moneyWonjson": moneyWon
+    }
+
+    return response
+
+if __name__ == '__main__':
+    blackJack.run(use_reloader=True, host='127.0.0.1', port=3000)
