@@ -7,6 +7,7 @@ from flask import Flask, request, jsonify
 from Scripts.Core.startNewGame import startGame
 from Scripts.Core.travel import travel
 from Scripts.Core.loginflask import auth
+from Scripts.Core.server import shop
 from flask_cors import CORS
 
 def create_app():
@@ -14,6 +15,8 @@ def create_app():
     app.register_blueprint(startGame)
     app.register_blueprint(travel)
     app.register_blueprint(auth)
+
+    app.register_blueprint(shop)
     return app
 
 app = create_app()

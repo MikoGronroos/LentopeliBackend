@@ -1,10 +1,10 @@
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, Blueprint
 import Scripts.Database.database as db
 import Scripts.Core.account as account
 
-app = Flask(__name__)
+shop = Blueprint('shop', __name__)
 
-@app.post("/buy")
+@shop.post("/buy")
 def buy_item():
     data = request.json
     item_type = data["type"]
@@ -37,6 +37,3 @@ def buy_item():
         return jsonify({"success": True, "message": "Voucher purchased!"})
 
     return jsonify({"success": False, "message": "Unknown item type"})
-
-if __name__ == "__main__":
-    app.run(port=5000, debug=True)
