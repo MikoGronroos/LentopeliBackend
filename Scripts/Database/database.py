@@ -62,8 +62,8 @@ def DeletePossibleAirports(id):
     sql = f"DELETE FROM possible_player_locations WHERE player_id = \'{id}\'"
     kursori.execute(sql)
 
-def AddPossibleAirport(id, airport, index):
-    sql = f"INSERT INTO possible_player_locations (player_id, location_index, locition) VALUES (\'{id}\', \'{index}\', \'{airport}\')"
+def AddPossibleAirport(id, airport):
+    sql = f"INSERT INTO possible_player_locations (player_id, location) VALUES (\'{id}\', \'{airport}\')"
     kursori.execute(sql)
 
 def GetAllPossibleAirports(id):

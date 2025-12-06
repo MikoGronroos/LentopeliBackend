@@ -4,11 +4,15 @@ from flask import Blueprint, request, jsonify
 
 travel = Blueprint('travel', __name__)
 
-@travel.route('/getNewAirports')
-def getNewAiports():
+def getAirports():
+    return db.GetAllPossibleAirports(account.getGameId())
+
+def getNewAirports():
     airports = db.takeAllAirports(db.getPlayerContinent(account.name))
     db.DeletePossibleAirports(account.getGameId())
-    return airports
+    for airport in airports:
+        print(airport)
+        db.AddPossibleAirport(account.getGameId(), airport[4])
 
 @travel.route('/move', methods=['POST'])
 def move():
@@ -18,6 +22,7 @@ def move():
         if db.CheckMoney(account.name, 30):
             db.fly(data['icao'], account.name)
             db.UpdateMoney(account.name, -30)
+            getNewAirports()
             status = "flightHasBeenCompleted"
     
     return jsonify({"status": status})
