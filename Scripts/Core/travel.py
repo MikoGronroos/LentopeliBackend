@@ -37,7 +37,6 @@ def move():
         if db.CheckMoney(account.name, 30):
             db.fly(data['icao'], account.name)
             db.UpdateMoney(account.name, -30)
-            getNewAirports()
             status = "flightHasBeenCompleted"
     
     return jsonify({"status": status})
