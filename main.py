@@ -7,13 +7,14 @@ from flask import Flask, request, jsonify
 from Scripts.Core.travel import travel
 from Scripts.Core.loginflask import auth
 from Scripts.Core.server import shop
+from Scripts.Core.inventory import inventory
 from flask_cors import CORS
 
 def create_app():
     app = Flask(__name__)
     app.register_blueprint(travel)
     app.register_blueprint(auth)
-
+    app.register_blueprint(inventory)
     app.register_blueprint(shop)
     return app
 
