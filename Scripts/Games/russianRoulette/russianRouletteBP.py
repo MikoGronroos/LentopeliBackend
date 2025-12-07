@@ -1,12 +1,12 @@
-from flask import Flask, request
+from flask import Blueprint, request
 import random
 from flask_cors import CORS
 
-dicegame = Flask(__name__)
-CORS(dicegame, origins=["http://localhost:63342"])
+dicegameBP = Blueprint("dicegame",__name__,url_prefix="/games/dicegame")
+CORS(dicegameBP, origins=["http://localhost:63342"])
 
 #Here comes all the starting variables like sum of the dice and the revealed dice
-@dicegame.route('/games/dicegame/getnumbers/<moneyToGamble>')
+@dicegameBP.route('/getnumbers/<moneyToGamble>')
 
 def rollNumbers(moneyToGamble):
     moneyToGamble = int(moneyToGamble)
@@ -33,7 +33,7 @@ def rollNumbers(moneyToGamble):
     return response
 
 #Here it checks whether your guess was too high or too low or correct
-@dicegame.route('/games/dicegame/highlow', methods=['POST'])
+@dicegameBP.route('/highlow', methods=['POST'])
 
 def isItHigherOrLower():
     data = request.get_json()
@@ -67,6 +67,3 @@ def isItHigherOrLower():
     }
 
     return response
-
-if __name__ == '__main__':
-    dicegame.run(use_reloader=True, host='127.0.0.1', port=3000)
