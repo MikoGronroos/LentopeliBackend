@@ -4,8 +4,13 @@ from flask import Blueprint, request, jsonify
 
 travel = Blueprint('travel', __name__)
 
+@travel.route('/getAirports', methods=['GET'])
 def getAirports():
-    return db.GetAllPossibleAirports(account.getGameId())
+    codes =  db.GetAllPossibleAirports(account.getGameId())
+    newList = []
+    for code in codes:
+        newList.append(db.GetAirport(code[1]))
+    return jsonify({"airports": newList})
 
 def getNewAirports():
     airports = db.takeAllAirports(db.getPlayerContinent(account.name))

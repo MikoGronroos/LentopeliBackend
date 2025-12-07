@@ -71,6 +71,11 @@ def GetAllPossibleAirports(id):
     kursori.execute(sql)
     return kursori.fetchall()
 
+def GetAirport(icao):
+    sql = f"SELECT * FROM airport where ident = \'{icao}\'"
+    kursori.execute(sql)
+    return kursori.fetchall()[0]
+
 
 def getPlayerContinent(name):
     sql = f'select airport.continent from airport, game where game.screen_name = \'{name}\' and airport.ident = game.location' 
