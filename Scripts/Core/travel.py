@@ -16,7 +16,6 @@ def getNewAirports():
     airports = db.takeAllAirports(db.getPlayerContinent(account.name))
     db.DeletePossibleAirports(account.getGameId())
     for airport in airports:
-        print(airport)
         db.AddPossibleAirport(account.getGameId(), airport[4])
 
 @travel.route('/move', methods=['POST'])
