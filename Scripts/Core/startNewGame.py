@@ -4,12 +4,9 @@ import Scripts.Core.travel as travel
 import random
 
 def startNewGame():
-    continentList = ["EU", "AS", "NA", "SA", "AF", "OC"]
-    startingContinent = continentList[random.randint(0, len(continentList) - 1)]
-    startingAirport = db.getRandomAirportCode(startingContinent)
-    account.continent = startingContinent
-    account.airport = startingAirport
-    db.newPlayerCreated(account.airport, account.name)
     travel.getNewAirports()
+    code = travel.getStartingAirport()
+    account.airport = code
+    db.newPlayerCreated(account.airport, account.name)
     return "Account created"
 

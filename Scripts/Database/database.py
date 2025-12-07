@@ -76,20 +76,16 @@ def GetAirport(icao):
     kursori.execute(sql)
     return kursori.fetchall()[0]
 
+def GetCurrentPlayerAirport(id):
+    sql = f"select location from game where id = \'{id}\'"
+    kursori.execute(sql)
+    return kursori.fetchall()
 
 def getPlayerContinent(name):
     sql = f'select airport.continent from airport, game where game.screen_name = \'{name}\' and airport.ident = game.location' 
     kursori.execute(sql)
     return kursori.fetchall()
     
-
-def listMaker(continent):
-    continentList = ["EU", "AS", "NA", "SA", "AF", "OC"]
-    for a in range(5):
-        if continentList[a] == continent:
-            continentList.remove(continent)
-    return continentList
-
 def getRandomAirportCode(continent):
     sql = f"SELECT ident FROM airport where continent = '{continent}' and type = 'large_airport'" 
     kursori.execute(sql)
@@ -115,10 +111,10 @@ def airportTaker(continent):
     countryList.append(result)
     return result[randomInt]
 
-def takeAllAirports(continent):
-    continentList = listMaker(continent)
+def takeAllAirports(): 
+    continentList = ["EU", "AS", "NA", "SA", "AF", "OC"]
     airportList = []
-    for i in range(5):
+    for i in range(len(continentList)):
         airportList.append(airportTaker(continentList[i]))
     return airportList
 
