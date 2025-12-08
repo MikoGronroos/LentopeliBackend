@@ -58,7 +58,7 @@ import requests
 
 @app.get("/weather/<icao>")
 def get_weather(icao):
-    # 1. Fetch airport info from DB
+
     sql = f"SELECT latitude_deg, longitude_deg, name FROM airport WHERE ident = '{icao}'"
     db.kursori.execute(sql)
     result = db.kursori.fetchone()
@@ -68,7 +68,6 @@ def get_weather(icao):
 
     lat, lon, name = result
 
-    # 2. Get live weather from Open-Meteo API
     weather_url = f"https://api.open-meteo.com/v1/forecast?latitude={lat}&longitude={lon}&current_weather=true"
     weather_data = requests.get(weather_url).json()
 
