@@ -49,10 +49,14 @@ def buy_item():
 
     return jsonify({"success": False, "message": "Unknown item type"})
 
+
+from Scripts.Core.loginflask import auth
+
 app = Flask(__name__)
 CORS(app)
 
 app.register_blueprint(shop)
+app.register_blueprint(auth)
 
 import requests
 
@@ -83,24 +87,4 @@ def get_weather(icao):
         "temperature": current["temperature"],
         "wind": current["windspeed"],
         "weathercode": current["weathercode"]
-    })
-
-if __name__ == "__main__":
-    app.run(port=3000, debug=True)
-
-
-
-@app.get("/weather/<icao>")
-def get_weather(icao):
-    weather = db.GetWeatherForAirport(icao)
-
-    if weather is None:
-        return jsonify({"success": False, "message": "No weather data found"})
-
-    return jsonify({
-        "success": True,
-        "icao": icao,
-        "temperature": weather["temperature"],
-        "wind": weather["wind"],
-        "clouds": weather["clouds"]
     })
