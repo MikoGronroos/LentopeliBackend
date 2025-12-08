@@ -9,7 +9,7 @@ import Scripts.Games.pokerLite as poker
 import os
 import sys
 
-games = {'AF': blackjack.Game,
+games = {'AF': "",
          'AS': russianroulette.Game,
          'EU': poker.Game,
          'NA': roulette.Game,
