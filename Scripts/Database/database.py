@@ -37,6 +37,12 @@ def UpdateMoney(name, money):
     sql = f"UPDATE game set money = (money + {money}) where screen_name = \'{name}\'"
     kursori.execute(sql)
 
+def GetCurrentMoney(id):
+    sql = f"select money from game where id = \'{id}\'"
+    kursori.execute(sql)
+    return kursori.fetchall()
+
+
 
 def CheckMoney(name, money):
     sql = f"SELECT * FROM game where screen_name = \'{name}\' and money >= \'{money}\'"
