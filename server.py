@@ -88,3 +88,6 @@ def get_weather(icao):
         "wind": current["windspeed"],
         "weathercode": current["weathercode"]
     })
+
+if __name__ == "__main__":
+    app.run(port=3000, debug=True)
