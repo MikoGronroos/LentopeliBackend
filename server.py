@@ -54,5 +54,54 @@ CORS(app)
 
 app.register_blueprint(shop)
 
+import requests
+
+@app.get("/weather/<icao>")
+def get_weather(icao):
+    # 1. Fetch airport info from DB
+    sql = f"SELECT latitude_deg, longitude_deg, name FROM airport WHERE ident = '{icao}'"
+    db.kursori.execute(sql)
+    result = db.kursori.fetchone()
+
+    if not result:
+        return jsonify({"success": False, "message": "Airport not found"})
+
+    lat, lon, name = result
+
+    # 2. Get live weather from Open-Meteo API
+    weather_url = f"https://api.open-meteo.com/v1/forecast?latitude={lat}&longitude={lon}&current_weather=true"
+    weather_data = requests.get(weather_url).json()
+
+    if "current_weather" not in weather_data:
+        return jsonify({"success": False, "message": "Weather unavailable"})
+
+    current = weather_data["current_weather"]
+
+    return jsonify({
+        "success": True,
+        "airport": name,
+        "icao": icao,
+        "temperature": current["temperature"],
+        "wind": current["windspeed"],
+        "weathercode": current["weathercode"]
+    })
+
 if __name__ == "__main__":
     app.run(port=3000, debug=True)
+
+
+
+@app.get("/weather/<icao>")
+def get_weather(icao):
+    weather = db.GetWeatherForAirport(icao)
+
+    if weather is None:
+        return jsonify({"success": False, "message": "No weather data found"})
+
+    return jsonify({
+        "success": True,
+        "icao": icao,
+        "temperature": weather["temperature"],
+        "wind": weather["wind"],
+        "clouds": weather["clouds"]
+    })

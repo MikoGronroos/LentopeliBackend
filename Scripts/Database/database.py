@@ -168,3 +168,17 @@ def show_collected_postcards(player_id):
 def addVoucher(player_id):
     sql = f"UPDATE game SET vouchers = vouchers + 1 WHERE id = {player_id}"
     kursori.execute(sql)
+
+def GetWeatherForAirport(icao):
+    sql = f"SELECT temperature, wind, clouds FROM weather WHERE ident = '{icao}'"
+    kursori.execute(sql)
+    result = kursori.fetchone()
+
+    if not result:
+        return None
+
+    return {
+        "temperature": result[0],
+        "wind": result[1],
+        "clouds": result[2]
+    }
