@@ -74,8 +74,6 @@ def stand():
                     db.UpdateMoney(account.getGameId(), moneyWon)
                 elif deck.calculateValue(dealerCards) == deck.calculateValue(playerCards):
                     state = 2
-                    moneyWon = moneyToGamble
-                    db.UpdateMoney(account.getGameId(), moneyWon)
                 elif deck.calculateValue(dealerCards) < deck.calculateValue(playerCards):
                     state = 1
                     moneyWon = moneyToGamble * 3
