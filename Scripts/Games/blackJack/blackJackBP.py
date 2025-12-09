@@ -71,20 +71,20 @@ def stand():
                 if deck.calculateValue(dealerCards) > deck.calculateValue(playerCards):
                     state = -1
                     moneyWon = -moneyToGamble
-                    db.UpdateMoney(account.id, moneyWon)
+                    db.UpdateMoney(account.getGameId(), moneyWon)
                 elif deck.calculateValue(dealerCards) == deck.calculateValue(playerCards):
                     state = 2
                     moneyWon = moneyToGamble
-                    db.UpdateMoney(account.id, moneyWon)
+                    db.UpdateMoney(account.getGameId(), moneyWon)
                 elif deck.calculateValue(dealerCards) < deck.calculateValue(playerCards):
                     state = 1
                     moneyWon = moneyToGamble * 3
-                    db.UpdateMoney(account.id, moneyWon)
+                    db.UpdateMoney(account.getGameId(), moneyWon)
                 break
             elif dealerSum > 21:
                 state = 1
                 moneyWon = moneyToGamble * 3
-                db.UpdateMoney(account.id, moneyWon)
+                db.UpdateMoney(account.getGameId(), moneyWon)
                 break
 
     dealerValue = deck.calculateValue(dealerCards)
@@ -118,11 +118,11 @@ def hit():
     if deck.calculateValue(playerCards) > 21:
         state = -1
         moneyWon = -moneyToGamble
-        db.UpdateMoney(account.id, moneyWon)
+        db.UpdateMoney(account.getGameId(), moneyWon)
     elif deck.calculateValue(playerCards) == 21:
         state = 3
         moneyWon = moneyToGamble * 3
-        db.UpdateMoney(account.id, moneyWon)
+        db.UpdateMoney(account.getGameId(), moneyWon)
 
     playerValue = deck.calculateValue(playerCards)
 

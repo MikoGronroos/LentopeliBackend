@@ -15,7 +15,6 @@ def login():
 
     if tryLogin(username, password):
         account.name = username
-        account.id = db.getGameId(account.name)
         return jsonify({"success": True})
     else:
         return jsonify({"success": False, "message": "Wrong username or password."})
@@ -25,12 +24,9 @@ def register():
     data = request.get_json()
     username = data.get('username')
     password = data.get('password')
-    print(username, password)
     if tryRegister(username, password):
         account.name = username
         start.startNewGame()
-        account.id = db.getGameId(account.name)
-        print(account.id)
         return jsonify({"success": True})
     else:
         return jsonify({"success": False, "message": "Username already exists."})

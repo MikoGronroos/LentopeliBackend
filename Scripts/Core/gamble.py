@@ -33,7 +33,7 @@ def gamble():
         game = games[selectedGame]
         moneyWon = game(amountToGamble)
 
-        db.UpdateMoney(account.name, moneyWon)
+        db.UpdateMoney(account.getGameId(), moneyWon)
         
         selection = int(input("1 to gamble and 2 to exit"))
         if selection == 1:

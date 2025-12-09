@@ -126,7 +126,8 @@ def takeAllAirports():
 
 def getGameId(name):
     kursori.execute(f"select id from game where screen_name = \'{name}'")
-    return kursori.fetchall()[0][0]
+    id = kursori.fetchall()[0][0]
+    return id
 
 def getPostcardId(continent):
     kursori.execute(f"SELECT id FROM postcards WHERE continent =  \'{continent}'")

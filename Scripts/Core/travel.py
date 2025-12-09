@@ -7,7 +7,7 @@ travel = Blueprint('travel', __name__)
 
 @travel.route('/getAirports', methods=['GET'])
 def getAirports():
-    codes =  db.GetAllPossibleAirports(account.id)
+    codes =  db.GetAllPossibleAirports(account.getGameId())
     newList = []
     for code in codes:
         newList.append(db.GetAirport(code[1]))
@@ -15,17 +15,17 @@ def getAirports():
 
 @travel.route('/getIsCurrentAirport', methods=['GET'])
 def getIsCurrentAirport():
-    value = db.GetCurrentPlayerAirport(account.id)
+    value = db.GetCurrentPlayerAirport(account.getGameId())
     return jsonify({"airport": value})
 
 def getNewAirports():
     airports = db.takeAllAirports()
-    db.DeletePossibleAirports(account.id)
+    db.DeletePossibleAirports(account.getGameId())
     for airport in airports:
-        db.AddPossibleAirport(account.id, airport[4])
+        db.AddPossibleAirport(account.getGameId(), airport[4])
 
 def getStartingAirport():
-    codes =  db.GetAllPossibleAirports(account.id)
+    codes =  db.GetAllPossibleAirports(account.getGameId())
     code = codes[random.randint(0, len(codes) - 1)];
     return code[1]
 
@@ -36,7 +36,7 @@ def move():
     if db.HasMoney(account.name) == True:
         if db.CheckMoney(account.name, 30):
             db.fly(data['icao'], account.name)
-            db.UpdateMoney(account.name, -30)
+            db.UpdateMoney(account.getGameId(), -30)
             status = "flightHasBeenCompleted"
     
     return jsonify({"status": status})
