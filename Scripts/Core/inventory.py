@@ -19,7 +19,6 @@ def getAllPostcards():
 def hasPostcard():
     data = request.get_json()
     value = db.alreadyHasPostcard(account.getGameId(), data['postcard'][2]);
-    print(value)
     if(value):
         return jsonify({"has": "true"})
     else:

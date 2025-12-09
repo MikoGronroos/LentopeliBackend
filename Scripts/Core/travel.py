@@ -20,8 +20,8 @@ def getIsCurrentAirport():
 
 @travel.route('/getCurrentContinent', methods=['GET'])
 def getCurrentContinent():
-    print(db.getPlayerContinent(account.name))
-    return jsonify({"status": "okay"})
+    value = db.getPlayerContinent(account.name)
+    return jsonify({"status": value})
 
 def getNewAirports():
     airports = db.takeAllAirports()
