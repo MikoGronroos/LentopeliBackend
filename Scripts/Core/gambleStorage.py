@@ -10,9 +10,3 @@ def AddMoney():
     money = data['money']
     moneyInStorage = money
     return jsonify({"status": "added"})
-
-
-@storage.route("/getMoney", methods=['GET'])
-def GetMoney():
-    return jsonify({"money": moneyInStorage})
-

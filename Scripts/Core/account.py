@@ -1,9 +1,7 @@
 import Scripts.Database.database as db
 
 name = ""
+id = 0
 continent = ""
 airport = ""
-
-def getGameId():
-    return db.getGameId(name)
     

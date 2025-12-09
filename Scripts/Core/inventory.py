@@ -7,7 +7,7 @@ inventory = Blueprint('inventory', __name__)
 
 @inventory.route("/getInventory", methods=['GET'])
 def getAllCards():
-    cards = db.show_collected_postcards(account.getGameId())
+    cards = db.show_collected_postcards(account.id)
     return jsonify({"cards": cards})
 
 @inventory.route("/getAllPostcards", methods=['GET'])
@@ -18,7 +18,7 @@ def getAllPostcards():
 @inventory.route("/hasPostcard", methods=['POST'])
 def hasPostcard():
     data = request.get_json()
-    value = db.alreadyHasPostcard(account.getGameId(), data['postcard'][2]);
+    value = db.alreadyHasPostcard(account.id, data['postcard'][2]);
     print(value)
     if(value):
         return jsonify({"has": "true"})

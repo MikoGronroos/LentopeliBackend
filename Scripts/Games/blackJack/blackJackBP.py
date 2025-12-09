@@ -1,4 +1,6 @@
 from Scripts.Games.blackJack import cardDeckforBlackJack as deck
+import Scripts.Core.account as account
+import Scripts.Database.database as db
 from flask import Blueprint, request
 import Scripts.Core.gambleStorage as storage
 
@@ -8,7 +10,7 @@ blackJackBP = Blueprint("blackJack",__name__,url_prefix="/games/blackJack")
 @blackJackBP.route('/setup')
 def setupGame():
     moneyToGamble = int(storage.moneyInStorage)
-    moneyWon = 1
+    moneyWon = 0
     cards = deck.getBlackjackCards()
     cards = deck.Shuffle(cards)
 
@@ -43,7 +45,6 @@ def setupGame():
 
 #Here it appends cards to dealer's hand according to the rules when you choose to stand
 @blackJackBP.route('/stand', methods=['POST'])
-
 def stand():
     data = request.get_json()
     dealerCards = data['dealerCards']
@@ -51,8 +52,8 @@ def stand():
     cards = data['cards']
     state = data['state']
     playerValue = data['playerValue']
-    moneyWon = data['moneyWon']
-    moneyToGamble = data['moneyToGamble']
+    moneyWon = 0 
+    moneyToGamble = int(storage.moneyInStorage)
 
     howManyDealerCards = 1
 
@@ -70,16 +71,20 @@ def stand():
                 if deck.calculateValue(dealerCards) > deck.calculateValue(playerCards):
                     state = -1
                     moneyWon = -moneyToGamble
+                    db.UpdateMoney(account.getGameId(), moneyWon)
                 elif deck.calculateValue(dealerCards) == deck.calculateValue(playerCards):
                     state = 2
                     moneyWon = moneyToGamble
+                    db.UpdateMoney(account.getGameId(), moneyWon)
                 elif deck.calculateValue(dealerCards) < deck.calculateValue(playerCards):
                     state = 1
                     moneyWon = moneyToGamble * 3
+                    db.UpdateMoney(account.getGameId(), moneyWon)
                 break
             elif dealerSum > 21:
                 state = 1
                 moneyWon = moneyToGamble * 3
+                db.UpdateMoney(account.getGameId(), moneyWon)
                 break
 
     dealerValue = deck.calculateValue(dealerCards)
@@ -99,7 +104,6 @@ def stand():
 
 #Here it appends cards to your hand when you choose to hit
 @blackJackBP.route('/hit', methods=['POST'])
-
 def hit():
     data = request.get_json()
     dealerCards = data['dealerCards']
@@ -107,18 +111,21 @@ def hit():
     cards = data['cards']
     state = data['state']
     dealerValue = data['dealerValue']
-    moneyWon = data['moneyWon']
-    moneyToGamble = data['moneyToGamble']
+    moneyWon = 0
+    moneyToGamble = int(storage.moneyInStorage)
 
     playerCards.append(cards.pop(0))
     if deck.calculateValue(playerCards) > 21:
         state = -1
         moneyWon = -moneyToGamble
+        db.UpdateMoney(account.getGameId(), moneyWon)
     elif deck.calculateValue(playerCards) == 21:
         state = 3
         moneyWon = moneyToGamble * 3
+        db.UpdateMoney(account.getGameId(), moneyWon)
 
     playerValue = deck.calculateValue(playerCards)
+
 
     response = {
         "playerCardsjson": playerCards,

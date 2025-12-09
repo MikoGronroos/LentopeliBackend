@@ -33,8 +33,8 @@ def CheckPassword(name, password):
     kursori.execute(sql)
     return len(kursori.fetchall()) > 0
 
-def UpdateMoney(name, money):
-    sql = f"UPDATE game set money = (money + {money}) where screen_name = \'{name}\'"
+def UpdateMoney(id, money):
+    sql = f"UPDATE game set money = (money + {money}) where id = \'{id}\'"
     kursori.execute(sql)
 
 def GetCurrentMoney(id):
