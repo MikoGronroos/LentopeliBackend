@@ -100,7 +100,8 @@ def GetCurrentPlayerAirport(id):
 def getPlayerContinent(name):
     sql = f'select airport.continent from airport, game where game.screen_name = \'{name}\' and airport.ident = game.location' 
     kursori.execute(sql)
-    return kursori.fetchall()
+    value = kursori.fetchall()[0][0]
+    return value 
     
 def getRandomAirportCode(continent):
     sql = f"SELECT ident FROM airport where continent = '{continent}' and type = 'large_airport'" 

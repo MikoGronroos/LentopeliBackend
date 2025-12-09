@@ -18,6 +18,11 @@ def getIsCurrentAirport():
     value = db.GetCurrentPlayerAirport(account.getGameId())
     return jsonify({"airport": value})
 
+@travel.route('/getCurrentContinent', methods=['GET'])
+def getCurrentContinent():
+    print(db.getPlayerContinent(account.name))
+    return jsonify({"status": "okay"})
+
 def getNewAirports():
     airports = db.takeAllAirports()
     db.DeletePossibleAirports(account.getGameId())
