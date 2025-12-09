@@ -1,17 +1,14 @@
-from flask import Flask, request
-from flask_cors import CORS
+from flask import Blueprint, request, jsonify
 import random
+import Scripts.Core.gambleStorage as storage
+import Scripts.Core.account as account
+import Scripts.Database.database as db
 
-pokerLite = Flask(__name__)
-CORS(pokerLite, origins=["http://localhost:63342"])
+pokerLiteBP = Blueprint("pokerLite",__name__,url_prefix="/games/pokerLite")
 
 #Here comes the starting values like playerCard, dealerCard and playerGuessedCorrectly
-@pokerLite.route('/games/pokerLite/getcards/<moneyToGamble>')
-
-def getCards(moneyToGamble):
-
-    moneyToGamble = int(moneyToGamble)
-    moneyWon = 1
+@pokerLiteBP.route('/getcards', methods=['GET'])
+def getCards():
     pList = []
 
     for i in range(5):
@@ -19,28 +16,25 @@ def getCards(moneyToGamble):
 
     response = {
 
-    "pListjson": pList,
-    "moneyToGamblejson": moneyToGamble,
-    "moneyWonjson": moneyWon
+    "pListjson": pList
 
     }
 
-    return response
+    return jsonify(response)
 
 #Here it checks whether your guess was correct or not
-@pokerLite.route('/games/pokerLite/checksum', methods=['POST'])
+@pokerLiteBP.route('/checksum', methods=['POST'])
 
 def checkSum():
     data = request.get_json()
     pList = data['pList']
     reRollCheck = data['reRollCheck']
-    moneyWon = data['moneyWon']
-    moneyToGamble = data['moneyToGamble']
+    moneyToGamble = int(storage.GetGambleStorage())
 
     cList = []
 
     for i in range(5):
-        cList.append(random.randint(3,9))
+        cList.append(random.randint(1,9))
 
         if reRollCheck[i] == 1:
             pList[i] = random.randint(1,9)
@@ -55,16 +49,14 @@ def checkSum():
         winOrLose = "lose"
         moneyWon = -moneyToGamble
 
+    db.UpdateMoney(account.getGameId(), moneyWon)
+
     response = {
         "pListjson": pList,
         "sumPListjson": sum(pList),
         "sumCListjson": sum(cList),
         "winOrLosejson": winOrLose,
-        "moneyToGamblejson": moneyToGamble,
         "moneyWonjson": moneyWon
     }
 
     return response
-
-if __name__ == '__main__':
-    pokerLite.run(use_reloader=True, host='127.0.0.1', port=3000)
