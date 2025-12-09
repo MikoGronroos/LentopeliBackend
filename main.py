@@ -6,7 +6,7 @@ import Scripts.Core.account as account
 from flask import Flask, request, jsonify
 from Scripts.Core.travel import travel
 from Scripts.Core.loginflask import auth
-from Scripts.Core.server import shop
+from server import shop
 from Scripts.Core.inventory import inventory
 from Scripts.Core.money import currency
 from Scripts.Core.gambleStorage import storage

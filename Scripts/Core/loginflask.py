@@ -30,6 +30,7 @@ def register():
         account.name = username
         start.startNewGame()
         account.id = db.getGameId(account.name)
+        print(account.id)
         return jsonify({"success": True})
     else:
         return jsonify({"success": False, "message": "Username already exists."})
