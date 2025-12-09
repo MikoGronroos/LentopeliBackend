@@ -8,5 +8,4 @@ currency = Blueprint('money', __name__)
 @currency.route('/getMoney', methods=['GET'])
 def getMoney():
     value = db.GetCurrentMoney(account.getGameId())
-    print(value)
     return jsonify({"money": value})

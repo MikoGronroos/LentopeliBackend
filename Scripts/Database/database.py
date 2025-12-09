@@ -22,6 +22,16 @@ def GetPlayerMoney(name):
     kursori.execute(sql)
     return kursori.fetchone()[0]
 
+def SetGambleStorage(id, money):
+    sql = f"UPDATE game set gambleStorage = {money} where id = \'{id}\'"
+    kursori.execute(sql)
+
+def GetGambleStorage(id):
+    sql = f"select gambleStorage from game where id = \'{id}\'"
+    kursori.execute(sql)
+    value = kursori.fetchall()[0]
+    return value
+
 
 def AddNewPlayer(name, password):
     sql = f"INSERT INTO game (id, location, password, screen_name, money, newPlayer) VALUES (%s, %s, %s, %s, %s, %s)"

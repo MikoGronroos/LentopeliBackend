@@ -9,7 +9,7 @@ blackJackBP = Blueprint("blackJack",__name__,url_prefix="/games/blackJack")
 #Here comes the starting values like player's and dealer's cards
 @blackJackBP.route('/setup')
 def setupGame():
-    moneyToGamble = int(storage.moneyInStorage)
+    moneyToGamble = int(storage.GetGambleStorage())
     moneyWon = 0
     cards = deck.getBlackjackCards()
     cards = deck.Shuffle(cards)
@@ -53,7 +53,7 @@ def stand():
     state = data['state']
     playerValue = data['playerValue']
     moneyWon = 0 
-    moneyToGamble = int(storage.moneyInStorage)
+    moneyToGamble = int(storage.GetGambleStorage())
 
     howManyDealerCards = 1
 
@@ -86,7 +86,6 @@ def stand():
                 moneyWon = moneyToGamble * 3
                 db.UpdateMoney(account.getGameId(), moneyWon)
                 break
-
     dealerValue = deck.calculateValue(dealerCards)
     response = {
         "playerCardsjson": playerCards,
@@ -112,7 +111,7 @@ def hit():
     state = data['state']
     dealerValue = data['dealerValue']
     moneyWon = 0
-    moneyToGamble = int(storage.moneyInStorage)
+    moneyToGamble = int(storage.GetGambleStorage())
 
     playerCards.append(cards.pop(0))
     if deck.calculateValue(playerCards) > 21:

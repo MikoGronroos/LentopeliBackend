@@ -1,6 +1,6 @@
 from flask import Blueprint, jsonify, request
-
-moneyInStorage = 0
+import Scripts.Database.database as db
+import Scripts.Core.account as account
 
 storage = Blueprint("storage",__name__)
 
@@ -8,5 +8,8 @@ storage = Blueprint("storage",__name__)
 def AddMoney():
     data = request.get_json()
     money = data['money']
-    moneyInStorage = money
+    db.SetGambleStorage(account.getGameId(), money)
     return jsonify({"status": "added"})
+
+def GetGambleStorage():
+    return db.GetGambleStorage(account.getGameId())[0]
