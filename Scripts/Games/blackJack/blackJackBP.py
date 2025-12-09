@@ -1,17 +1,13 @@
-from blackJack import cardDeckforBlackJack as deck
+from Scripts.Games.blackJack import cardDeckforBlackJack as deck
 from flask import Blueprint, request
-from flask_cors import CORS
-
+import Scripts.Core.gambleStorage as storage
 
 blackJackBP = Blueprint("blackJack",__name__,url_prefix="/games/blackJack")
-CORS(blackJackBP, origins=["http://localhost:63342"])
 
 #Here comes the starting values like player's and dealer's cards
-@blackJackBP.route('/setup/<moneyToGamble>')
-
-def setupGame(moneyToGamble):
-
-    moneyToGamble = int(moneyToGamble)
+@blackJackBP.route('/setup')
+def setupGame():
+    moneyToGamble = int(storage.moneyInStorage)
     moneyWon = 1
     cards = deck.getBlackjackCards()
     cards = deck.Shuffle(cards)

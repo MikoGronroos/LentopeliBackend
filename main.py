@@ -9,6 +9,8 @@ from Scripts.Core.loginflask import auth
 from Scripts.Core.server import shop
 from Scripts.Core.inventory import inventory
 from Scripts.Core.money import currency
+from Scripts.Core.gambleStorage import storage
+from Scripts.Games.blackJack.blackJackBP import blackJackBP 
 from flask_cors import CORS
 
 def create_app():
@@ -18,6 +20,8 @@ def create_app():
     app.register_blueprint(inventory)
     app.register_blueprint(shop)
     app.register_blueprint(currency)
+    app.register_blueprint(storage)
+    app.register_blueprint(blackJackBP)
     return app
 
 app = create_app()
