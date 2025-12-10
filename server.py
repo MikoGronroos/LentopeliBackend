@@ -38,29 +38,12 @@ def buy_item():
             "message": "Postcard bought!",
             "win": False
         })
-
-    if item_type == "voucher":
-        db.UpdateMoney(name, -price)
-        return jsonify({
-            "success": True,
-            "message": "Voucher purchased!",
-            "win": False
-        })
-
     return jsonify({"success": False, "message": "Unknown item type"})
 
 
-from Scripts.Core.loginflask import auth
-
-app = Flask(__name__)
-CORS(app)
-
-app.register_blueprint(shop)
-app.register_blueprint(auth)
-
 import requests
 
-@app.get("/weather/<icao>")
+@shop.get("/weather/<icao>")
 def get_weather(icao):
 
     sql = f"SELECT latitude_deg, longitude_deg, name FROM airport WHERE ident = '{icao}'"
@@ -88,6 +71,3 @@ def get_weather(icao):
         "wind": current["windspeed"],
         "weathercode": current["weathercode"]
     })
-
-if __name__ == "__main__":
-    app.run(port=3000, debug=True)

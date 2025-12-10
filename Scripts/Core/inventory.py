@@ -23,3 +23,8 @@ def hasPostcard():
         return jsonify({"has": "true"})
     else:
         return jsonify({"has": "false"})
+
+@inventory.route("/hasAllPostcards", methods=['GET'])
+def hasAllPostcards():
+    value = db.playerHasAllPostcards(account.getGameId())
+    return jsonify({"winning": value})
