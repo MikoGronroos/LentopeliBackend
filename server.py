@@ -18,13 +18,16 @@ def buy_item():
 
     if item_type == "postcard":
         game_id = db.getGameId(name)
+        if item_continent != db.getPlayerContinent(name):
+            return jsonify({"success": False, "message": "Not in the continent"})
+
 
         if db.alreadyHasPostcard(game_id, item_continent):
             return jsonify({"success": False, "message": "Already owned"})
 
         postcard_id = db.getPostcardId(item_continent)
         db.collect_postcard(game_id, postcard_id)
-        db.UpdateMoney(name, -price)
+        db.UpdateMoney(game_id, -price)
 
         if db.playerHasAllPostcards(game_id):
             return jsonify({
